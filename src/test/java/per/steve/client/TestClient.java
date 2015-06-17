@@ -3,7 +3,6 @@ package per.steve.client;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import per.steve.server.FileTransferServer;
@@ -11,12 +10,6 @@ import per.steve.server.FileTransferServer;
 public class TestClient {
 	
 	FileTransferServer ftServer;
-	
-	@Before
-	public void setup() {
-//		FileTransferServer fts = new FileTransferServer(15124, "src/test/resources/test.txt");
-//		fts.runService();
-	}
 
 	@Test
 	public void test() throws IOException {
@@ -37,9 +30,11 @@ public class TestClient {
 	}
 	
 	@Test
-	public void testClient() {
-		FileTransferClient fileTransferClient = new FileTransferClient("127.0.0.1", 15124, "e:/testRecieved.txt");
-		fileTransferClient.downloadFile();
+	public void testClient() throws IOException {
+		FileTransferClient fileTransferClient = new FileTransferClient("127.0.0.1", 15124, "src/test/resources/client/test.txt");
+		fileTransferClient.downloadFile("src/test/resources/server/test.txt");
+//		FileUtils.deleteQuietly(new File("src/test/resources/client/test.txt"));
+		
 	}
 
 }

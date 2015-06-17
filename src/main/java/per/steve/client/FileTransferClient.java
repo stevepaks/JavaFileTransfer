@@ -1,6 +1,7 @@
 package per.steve.client;
 
 import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,14 +21,19 @@ public class FileTransferClient {
 		this.targetPath = targetPath;
 	}
 	
-	public void downloadFile() {
+	public void downloadFile(String string) {
 		int fileSize = 1022386;
 		int bytesRead;
 		int currBytesIndex = 0;
 		Socket s = null;
+		DataOutputStream dos = null;
 		BufferedOutputStream bos = null;
 		try {
 			s = new Socket(hostAddress, port);
+			dos = new DataOutputStream(s.getOutputStream());
+			dos.writeUTF(string);
+			dos.flush();
+			
 			byte[] byteArray = new byte[fileSize];
 			InputStream is = s.getInputStream();
 			File fp = new File(targetPath);
@@ -51,6 +57,13 @@ public class FileTransferClient {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		} finally {
+			if(dos != null) {
+				try {
+					dos.close();
+				} catch (IOException e) {
+					System.out.println(e.getMessage());
+				}
+			}
 			if(s != null) {
 				try {
 					s.close();
